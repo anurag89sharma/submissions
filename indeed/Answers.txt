@@ -1,0 +1,104 @@
+Please answer the following questions.
+1. How long did it take you to solve the problem?
+I gave around 3-4 days to solve/optimize the problem (with 4-5 hours of sitting per day)
+
+2. What software language and libraries did you use to solve the problem? Why did you
+choose these languages/libraries?
+I used python to solve this task. Here is the list of libraries I have chosen to accomplish this task
+  pandas        to do analysis on the dataset
+  matplotlib    to plot graphs how the loss function is behaving for every epoc
+  seaborn       to plot how salary is varied with different column in the dataset
+  sklearn       to see how well this dataset is working with various liner regression models
+  xgboost       an ensamble learning method to see how well is performing on the dataset
+  lightgbm      A gradient boosting framework to see how well is performing on the dataset
+  keras         used for building neural network to work with the non linearity in the dataset
+
+3. What steps did you take to prepare the data for the project? Was any cleaning necessary?
+  a. merge the train_features and train_salaries data frame on the common column of job-id
+  b. plot the distribution of salary with the column containing categorical values like
+      companyId
+      jobType
+      degree
+      major
+      industry
+  c. used the above plots to ignore the features having least impact on the salary
+
+  d. Added extra column 'Type' with all values set to 'Train' on the above data frame
+  e. Added extra column 'Type' with all values set to 'Test' on the above test data frame
+  f. Added extra column 'salary' with all values set to '0' on the above data frame
+  g. Combine the 2 data frame together so that same cleaning steps can be applied on test and train data frame
+  h. Check if any of the columns in the above data frame contains null values or not.
+
+4. a) What machine learning method did you apply?
+    I used keras sequential model to add multiple neural network layers with 'relu' activation function
+    to solve this problem.
+b) Why did you choose this method?
+    I earlier tried various Linear Regression or Random forest approach to solve this problem, but
+    they were not able to get the desired results because liner models are fails to capture the
+    non-linearity in the dataset
+c) What other methods did you consider?
+    I tried the following methods before jumping to use neural network to solve this problem
+    c.1 Lasso (sklearn liner model)
+    c.2 ElasticNet (sklearn liner model)
+    c.3 GradientBoostingRegressor (sklearn ensamble methods)
+    c.4 XGBRegressor (from xgboost)
+    c.5 LGBMRegressor (from lightgbm)
+
+5. Describe how the machine learning method that you chose works.
+  I am using neural network architecture to solve this problem. We add multiple layers (with varying sizes)
+  having an activation function (to capture the non-linearity) in each layer.
+
+  The input to the 1st layer of the network is the dataset itself and the input to the subsequent layers
+  is the output of the previous layers. It basically is a 2 step process one we call feed-forward step
+  and the other we call back-propagation that corrects the neural network weights at each layer.
+
+  We do this for multiple epocs/steps until the network starts to overfit the data
+
+6. Was any encoding or transformation of features necessary? If so, what
+encoding/transformation did you use?
+  There are some categorical features in the dataset for example - 'jobType', 'degree', 'major'
+  and 'industry'. I used pandas get_dummies function on the above features to convert categorical
+  variable into dummy/indicator variables
+
+7. Which features had the greatest impact on salary? How did you identify these to be
+most significant? Which features had the least impact on salary? How did you identify
+these?
+
+  Features with the greatest impact on the salary - milesFromMetropolis & yearsOfExperince
+  Features with the least impact on the salary - companyId
+
+  I have identified these by plotting histograms for these features against the salary values (code in GitHub)
+
+8. How did you train your model? During training, what issues concerned you?
+  I used keras sequential model.fit to train my model. I used mean_squared_error as my loss function
+  and trained the model for 100 epocs and used 'adam' optimizer to solve the problem.
+
+  Durning training I tried to use a separate loss function - root mean squared error. For this I
+  created my custom loss function like This
+
+      def rmse(y_true, y_pred):
+          from keras import backend
+          return np.abs(backend.sqrt(backend.mean(backend.square(y_pred - y_true), axis=-1)))
+
+  But using this loss function results in getting "nan" in the rsme error. I search on the net on
+  fixing this issue but found out that other people have also faced similar issue in the past.
+  This issue has something to do with Keras library (al tough the reasons are unknown).
+
+9. a) Please estimate the RMSE that your model will achieve on the test dataset.
+      Expected RSME on the test dataset would be around 18.5
+b) How did you create this estimate?
+      I reserved 20% of the training data for validation purpose and I am getting around the same
+      RSME error for the validation set
+
+10. What metrics, other than RMSE, would be useful for assessing the accuracy of salary
+estimates? Why?
+
+    I have chosen MSE to train the model. RSME is calculated by taking the square root of MSE
+    Apart from this we can also use R-squared error.
+
+    In R-squared we have a baseline model. This model uses the mean of the observed responses
+    of dependent variable Y and always predicts this mean as the value of Y.
+
+    Any regression model that we fit is compared to this baseline model to understand it’s goodness of fit.
+
+    Basically R-squared error explains how good is your model when compared to the baseline model
