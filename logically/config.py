@@ -1,4 +1,0 @@
-NEO4J_URL = 'bolt://neo4j:news-text-logically@127.0.0.1:7687'
-PROCESS_TO_FORK = 8
-QUEUE_TIMEOUT_LIMIT = 300 # 5 minutes
-NUM_DOCS_TO_PROCESS = 10000
