@@ -51,6 +51,7 @@ def process_news_feed():
     pool.close()
     pool.join()
 
+
 if __name__ == '__main__':
-    # populate_topics_in_neo4j(model_path, logger)
-    process_news_feed()
+    populate_topics_in_neo4j(model_path, logger)
+    # process_news_feed()
