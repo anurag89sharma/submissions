@@ -6,7 +6,7 @@ class WeightRel(StructuredRel):
 
 class Document(StructuredNode):
     documentId = StringProperty(unique_index=True, required=True)
-    topic = RelationshipTo('Topic', 'belongsTo')
+    topic = RelationshipTo('Topic', 'belongsTo', model=WeightRel)
     entity = RelationshipTo('Entity', 'hasEntity')
 
     @property
@@ -25,7 +25,7 @@ class Keyword(StructuredNode):
 
 class Topic(StructuredNode):
     name = StringProperty(unique_index=True, required=True)
-    document = RelationshipFrom('Document', 'belongsTo')
+    document = RelationshipFrom('Document', 'belongsTo', model=WeightRel)
     hasKeyword = RelationshipTo('Keyword', 'hasKeyword', model=WeightRel)
 
     @property
@@ -34,18 +34,10 @@ class Topic(StructuredNode):
 
 
 class Entity(StructuredNode):
-    name = StringProperty(unique_index=True, required=True)
+    name = StringProperty(index=True, required=True)
+    entity_type = StringProperty(required=True)
+    key = StringProperty(unique_index=True, required=True)
     document = RelationshipFrom('Document', 'hasEntity')
-    hasType = RelationshipTo('EntityType', 'hasType')
-
-    @property
-    def serialize(self):
-        return self.__properties__
-
-
-class EntityType(StructuredNode):
-    name = StringProperty(unique_index=True, required=True)
-    entity = RelationshipFrom('Entity', 'hasType')
 
     @property
     def serialize(self):

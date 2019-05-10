@@ -1,0 +1,5 @@
+Related topics
+
+match(n:Topic)-[r1:hasKeyword]->(m:Keyword)<-[r2:hasKeyword]-(l:Topic)
+return distinct n.name, l.name, count(m) as common_nodes, sum(r1.weight),
+sum(r2.weight) order by common_nodes desc limit 100
