@@ -18,10 +18,12 @@ def get_topics(document, lda_model, spacy_model):
     return topics
 
 
-def get_entities(document, spacy_model):
+def get_entities_from_spacy(document, spacy_model):
     cleaned_text = entity_level_cleaning(document)
     doc = spacy_model(cleaned_text)
-    return {(X.text.lower().title(), X.label_) for X in doc.ents if X.label_ in {'PERSON', 'ORG', 'GPE'}}
+    # ignore entities having length less than4 and greater than 30
+    return {(X.text.lower().title(), X.label_) for X in doc.ents
+            if X.label_ in {'PERSON', 'ORG', 'GPE'} and  4 < len(X.text) <= 30}
 
 
 def basic_cleanup(document):
@@ -60,13 +62,16 @@ def topic_level_cleaning(text, spacy_model):
 
 def entity_level_cleaning(document):
     # 1. Remove non-letters (preserving '.' char to know the ending of sentence)
-    review_text = re.sub("[^a-zA-Z].", " ", document)
+    review_text = re.sub("[^a-zA-Z0-9.]", " ", document)
+    # 2. Separate out thing like asp.net p.m with beginning of sentences
+    review_text = re.sub("[.]", ". ", review_text)
+
     review_text = re.sub(r'([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))', r'\1 ', review_text)
 
     # conversion to lowercase is not checked as capitalization is required
     # for detection of entities like person, organization or location
 
-    # 2. Replace multiple spaces with single space
+    # 3. Replace multiple spaces with single space
     document = re.sub(' +', ' ', review_text).strip()
     return document
 
@@ -104,6 +109,6 @@ if __name__ == '__main__':
             # topics = get_topics(document, lda_model, nlp)
             # print(topics, "\n")
 
-            entities = get_entities(document, nlp)
+            entities = get_entities_from_spacy(document, nlp)
             pprint(entities)
 
