@@ -1,5 +1,10 @@
 Related topics
 
 match(n:Topic)-[r1:hasKeyword]->(m:Keyword)<-[r2:hasKeyword]-(l:Topic)
-return distinct n.name, l.name, count(m) as common_nodes, sum(r1.weight),
-sum(r2.weight) order by common_nodes desc limit 100
+return distinct n.name, l.name, count(m) as common_nodes 
+order by common_nodes desc limit 100
+
+Related Entities
+
+match (n1:Entity)<-[r1:hasEntity]-(m:Document)-[r2:hasEntity]->(n2:Entity) 
+return n1.name, n2.name, count(m) order by count(m) desc limit 100
