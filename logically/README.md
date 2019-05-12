@@ -2,6 +2,11 @@
 
 Data corpus can be found here - https://research.signal-ai.com/newsir16/signal-dataset.html
 
+- The python packages required to run this code are listed in requirement.txt
+- Specify all the necessary file paths like topic model path, news-article file path, log file path etc in configuration/config.ini
+- Neo4j connetion url can also be changed in configuration/config.ini
+- Script to populate graph is **populate_graph.py**
+
 There are 2 ipython notebooks in this repository
 - TopicModelling.ipynb 
 - Spacy-NER Vs Stanford-NER.ipynb
@@ -26,4 +31,5 @@ There are 2 ipython notebooks in this repository
   - spaCy's NER Tagger
   - Stanford NER Tagger (More info can be found here - https://nlp.stanford.edu/software/CRF-NER.html)
     - This requires **java8** or above to run the Stanford NER Tagger
+    - Related classifier and jars can be downloaded from - https://nlp.stanford.edu/software/CRF-NER.html#Download 
 - I found Stanford NER Tagger performing better on this dataset. But its quite slow when compared to spaCy NER Tagger
