@@ -18,7 +18,7 @@ neo4j-driver==1.6.3
 neomodel==3.3.1
 neotime==1.7.4
 nltk==3.4.1
-numpy==1.16.3
+numpy==1.22.0
 plac==0.9.6
 preshed==2.0.1
 python-dateutil==2.8.0
